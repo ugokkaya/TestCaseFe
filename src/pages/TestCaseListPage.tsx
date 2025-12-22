@@ -57,13 +57,14 @@ const TestCaseListPage = () => {
                 <th className="px-4 py-3">Başlık</th>
                 <th className="px-4 py-3">Çatı</th>
                 <th className="px-4 py-3">Oluşturulma</th>
+                <th className="px-4 py-3">Metrikler</th>
                 <th className="px-4 py-3" aria-label="Actions"></th>
               </tr>
             </thead>
             <tbody>
               {rows.length === 0 && (
                 <tr>
-                  <td className="px-4 py-6 text-center text-slate-500" colSpan={6}>
+                  <td className="px-4 py-6 text-center text-slate-500" colSpan={7}>
                     Henüz test senaryosu yok. Test İste sayfasından yeni kayıtlar oluşturun.
                   </td>
                 </tr>
@@ -79,6 +80,31 @@ const TestCaseListPage = () => {
                     </span>
                   </td>
                   <td className="px-4 py-4">{formatDate(testCase.createdAt)}</td>
+                  <td className="px-4 py-4">
+                    <div className="flex flex-wrap gap-2">
+                      <span className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs text-slate-600">
+                        Toplam Token: {testCase.totalTokens ?? 0}
+                      </span>
+                      <span className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs text-slate-600">
+                        Prompt: {testCase.promptTokens ?? 0}
+                      </span>
+                      <span className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs text-slate-600">
+                        Tamamlama: {testCase.completionTokens ?? 0}
+                      </span>
+                      <span className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs text-slate-600">
+                        Gecikme: {testCase.latencyMs ?? 0} ms
+                      </span>
+                      <span className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs text-slate-600">
+                        Toplam Süre: {testCase.totalDurationMs ?? 0} ms
+                      </span>
+                      <span className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs text-slate-600">
+                        Prompt Eval: {testCase.promptEvalDurationMs ?? 0} ms
+                      </span>
+                      <span className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs text-slate-600">
+                        Eval: {testCase.evalDurationMs ?? 0} ms
+                      </span>
+                    </div>
+                  </td>
                   <td className="px-4 py-4 text-right">
                     <button
                       onClick={() => setSelectedTestCase(testCase)}
@@ -116,6 +142,34 @@ const TestCaseListPage = () => {
             <div>
               <dt className="text-xs uppercase text-slate-500">Oluşturulma</dt>
               <dd className="text-base text-slate-700">{formatDate(selectedTestCase.createdAt)}</dd>
+            </div>
+            <div>
+              <dt className="text-xs uppercase text-slate-500">Metrikler</dt>
+              <dd className="mt-2">
+                <ul className="grid grid-cols-2 gap-2 text-sm text-slate-700 md:grid-cols-3">
+                  <li className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2">
+                    Toplam Token: <span className="font-semibold">{selectedTestCase.totalTokens ?? 0}</span>
+                  </li>
+                  <li className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2">
+                    Prompt: <span className="font-semibold">{selectedTestCase.promptTokens ?? 0}</span>
+                  </li>
+                  <li className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2">
+                    Tamamlama: <span className="font-semibold">{selectedTestCase.completionTokens ?? 0}</span>
+                  </li>
+                  <li className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2">
+                    Gecikme: <span className="font-semibold">{selectedTestCase.latencyMs ?? 0} ms</span>
+                  </li>
+                  <li className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2">
+                    Toplam Süre: <span className="font-semibold">{selectedTestCase.totalDurationMs ?? 0} ms</span>
+                  </li>
+                  <li className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2">
+                    Prompt Eval: <span className="font-semibold">{selectedTestCase.promptEvalDurationMs ?? 0} ms</span>
+                  </li>
+                  <li className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2">
+                    Eval: <span className="font-semibold">{selectedTestCase.evalDurationMs ?? 0} ms</span>
+                  </li>
+                </ul>
+              </dd>
             </div>
             <div>
               <dt className="text-xs uppercase text-slate-500">Beklenen Sonuç</dt>

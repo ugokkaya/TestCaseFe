@@ -33,6 +33,13 @@ export interface TestCaseEntity {
   framework: string;
   scriptCode: string;
   createdAt: string;
+  latencyMs: number;
+  promptTokens: number;
+  completionTokens: number;
+  totalTokens: number;
+  totalDurationMs: number;
+  promptEvalDurationMs: number;
+  evalDurationMs: number;
 }
 
 export const decodeEscapedText = (value: string): string => {
@@ -60,13 +67,20 @@ export const normalizeSteps = (steps: string[] | string): string[] => {
 
 export const fetchTestCases = async (): Promise<TestCaseEntity[]> => {
   const { data } = await api.get<TestCaseEntity[]>('/Ai/list');
-  return data.map((item) => ({
+  return data.map((item: any) => ({
     ...item,
-    requirement: decodeEscapedText(item.requirement),
-    title: decodeEscapedText(item.title),
-    expected: decodeEscapedText(item.expected),
-    steps: normalizeSteps(item.steps),
-    scriptCode: decodeEscapedText(item.scriptCode ?? '')
+    requirement: decodeEscapedText(item.requirement ?? item.Requirement),
+    title: decodeEscapedText(item.title ?? item.Title),
+    expected: decodeEscapedText(item.expected ?? item.Expected),
+    steps: normalizeSteps((item.steps ?? item.Steps) as any),
+    scriptCode: decodeEscapedText((item.scriptCode ?? item.ScriptCode) ?? ''),
+    latencyMs: Number(item.latencyMs ?? item.LatencyMs ?? 0),
+    promptTokens: Number(item.promptTokens ?? item.PromptTokens ?? 0),
+    completionTokens: Number(item.completionTokens ?? item.CompletionTokens ?? 0),
+    totalTokens: Number(item.totalTokens ?? item.TotalTokens ?? 0),
+    totalDurationMs: Number(item.totalDurationMs ?? item.TotalDurationMs ?? 0),
+    promptEvalDurationMs: Number(item.promptEvalDurationMs ?? item.PromptEvalDurationMs ?? 0),
+    evalDurationMs: Number(item.evalDurationMs ?? item.EvalDurationMs ?? 0)
   }));
 };
 
